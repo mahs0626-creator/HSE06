@@ -25,14 +25,49 @@ class HseAcademyApp extends StatelessWidget {
   }
 }
 
+
 class Lesson {
   final String title;
   final String subtitle;
+
+  // General educational content
   final String english;
   final String persian;
+
+  // Official source information
+  final String sourceTitle;
+  final String sourceUrl;
+  final String standardClause;
+  final String originalStandardText;
+
+  // Explanations can be translated into more languages
+  final Map<String, String> explanations;
+
+  // Quiz
   final List<String> options;
   final int answer;
   final String explanation;
+  final Map<String, List<String>> optionsByLanguage;
+  final Map<String, String> quizExplanationsByLanguage;
+
+  const Lesson({
+    required this.title,
+    required this.subtitle,
+    required this.english,
+    required this.persian,
+    required this.options,
+    required this.answer,
+    required this.explanation,
+
+    this.sourceTitle = '',
+    this.sourceUrl = '',
+    this.standardClause = '',
+    this.originalStandardText = '',
+    this.explanations = const {},
+    this.optionsByLanguage = const {},
+    this.quizExplanationsByLanguage = const {},
+  });
+}
   const Lesson({required this.title, required this.subtitle, required this.english, required this.persian, required this.options, required this.answer, required this.explanation});
 }
 
@@ -57,10 +92,12 @@ const lessons = <Lesson>[
     explanation: 'Elimination removes the hazard, so it is generally the most effective control when feasible.'),
   Lesson(
     title: 'Lockout / Tagout Basics', subtitle: 'مبانی قفل‌گذاری و برچسب‌گذاری',
-    english: 'Lockout/tagout (LOTO) helps prevent unexpected energization, start-up, or release of stored energy during servicing and maintenance. Workers must follow the applicable procedure and verify isolation before work begins.',
-    persian: 'قفل‌گذاری و برچسب‌گذاری برای جلوگیری از راه‌اندازی ناخواسته یا آزادشدن انرژی ذخیره‌شده هنگام تعمیرات و سرویس استفاده می‌شود. پیش از شروع کار باید طبق روش اجرایی مربوطه، جداسازی انرژی را تأیید کرد.',
-    options: ['A substitute for all maintenance procedures', 'A method to control hazardous energy', 'Only a sign placed on a wall', 'A type of personal protective equipment'], answer: 1,
-    explanation: 'LOTO is part of hazardous-energy control. Site-specific procedures and applicable rules must be followed.'),
+   sourceTitle: 'OSHA - The Control of Hazardous Energy',
+    sourceUrl: 'https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.147',
+    standardClause: '29 CFR 1910.147(a)(1)(i)',
+    originalStandardText:
+    'This standard covers the servicing and maintenance of machines and equipment in which the unexpected energization or start up of the machines or equipment, or release of stored energy could cause injury to employees.',
+
   Lesson(
     title: 'Personal Protective Equipment', subtitle: 'تجهیزات حفاظت فردی',
     english: 'Personal protective equipment (PPE) can reduce exposure to workplace hazards when selected, fitted, used, and maintained correctly. PPE should be chosen based on the hazards and does not replace feasible higher-level controls.',
