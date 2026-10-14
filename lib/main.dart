@@ -24,31 +24,41 @@ class HseAcademyApp extends StatelessWidget {
     );
   }
 }
-
-
 class Lesson {
   final String title;
   final String subtitle;
-
-  // General educational content
   final String english;
   final String persian;
+  final List<String> options;
+  final int answer;
+  final String explanation;
 
-  // Official source information
   final String sourceTitle;
   final String sourceUrl;
   final String standardClause;
   final String originalStandardText;
 
-  // Explanations can be translated into more languages
   final Map<String, String> explanations;
-
-  // Quiz
-  final List<String> options;
-  final int answer;
-  final String explanation;
   final Map<String, List<String>> optionsByLanguage;
   final Map<String, String> quizExplanationsByLanguage;
+
+  const Lesson({
+    required this.title,
+    required this.subtitle,
+    required this.english,
+    required this.persian,
+    required this.options,
+    required this.answer,
+    required this.explanation,
+    this.sourceTitle = '',
+    this.sourceUrl = '',
+    this.standardClause = '',
+    this.originalStandardText = '',
+    this.explanations = const {},
+    this.optionsByLanguage = const {},
+    this.quizExplanationsByLanguage = const {},
+  });
+}
 
   const Lesson({
     required this.title,
