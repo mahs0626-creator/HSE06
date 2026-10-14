@@ -144,7 +144,66 @@ class Dashboard extends StatelessWidget {
 
 class StatCard extends StatelessWidget { final IconData icon; final String label; final String value; const StatCard({super.key, required this.icon, required this.label, required this.value}); @override Widget build(BuildContext context) => Card(child: Padding(padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8), child: Column(children: [Icon(icon, color: teal), const SizedBox(height: 7), Text(value, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 19)), Text(label, style: const TextStyle(fontSize: 11, color: Colors.black54))]))); }
 
-class CoursesPage extends StatelessWidget { final Set<int> completed; final ValueChanged<int> onOpen; const CoursesPage({super.key, required this.completed, required this.onOpen}); @override Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(18), children: [const Text('OSHA Fundamentals', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: navy)), const SizedBox(height: 6), const Text('Introductory learning path • 6 lessons', style: TextStyle(color: Colors.black54)), const SizedBox(height: 18), Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: const Color(0xFFE4F5F3), borderRadius: BorderRadius.circular(16)), child: const Row(children: [Icon(Icons.language, color: teal, size: 30), SizedBox(width: 12), Expanded(child: Text('Each lesson includes English source text, Persian explanation, and a short knowledge check.'))])), const SizedBox(height: 14), ...List.generate(lessons.length, (i) => LessonTile(index: i, completed: completed.contains(i), onTap: () => onOpen(i))]); }
+class CoursesPage extends StatelessWidget {
+  final Set<int> completed;
+  final ValueChanged<int> onOpen;
+
+  const CoursesPage({
+    super.key,
+    required this.completed,
+    required this.onOpen,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(18),
+      children: [
+        const Text(
+          'OSHA Fundamentals',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w800,
+            color: navy,
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          'Introductory learning path • 6 lessons',
+          style: TextStyle(color: Colors.black54),
+        ),
+        const SizedBox(height: 18),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFFE4F5F3),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: const Row(
+            children: [
+              Icon(Icons.language, color: teal, size: 30),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Each lesson includes English source text, Persian explanation, and a short knowledge check.',
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 14),
+        ...List.generate(
+          lessons.length,
+          (i) => LessonTile(
+            index: i,
+            completed: completed.contains(i),
+            onTap: () => onOpen(i),
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 class LessonTile extends StatelessWidget { final int index; final bool completed; final VoidCallback onTap; const LessonTile({super.key, required this.index, required this.completed, required this.onTap}); @override Widget build(BuildContext context) => Card(margin: const EdgeInsets.only(bottom: 10), child: ListTile(onTap: onTap, contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7), leading: CircleAvatar(backgroundColor: completed ? const Color(0xFFD9F4E8) : const Color(0xFFE5EDF4), child: Icon(completed ? Icons.check : Icons.play_lesson_outlined, color: completed ? Colors.green : navy)), title: Text(lessons[index].title, style: const TextStyle(fontWeight: FontWeight.bold)), subtitle: Text(lessons[index].subtitle, textDirection: TextDirection.rtl, textAlign: TextAlign.left), trailing: const Icon(Icons.chevron_right))); }
 
