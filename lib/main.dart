@@ -24,6 +24,7 @@ class HseAcademyApp extends StatelessWidget {
     );
   }
 }
+
 class Lesson {
   final String title;
   final String subtitle;
@@ -60,66 +61,115 @@ class Lesson {
   });
 }
 
-  const Lesson({
-    required this.title,
-    required this.subtitle,
-    required this.english,
-    required this.persian,
-    required this.options,
-    required this.answer,
-    required this.explanation,
-
-    this.sourceTitle = '',
-    this.sourceUrl = '',
-    this.standardClause = '',
-    this.originalStandardText = '',
-    this.explanations = const {},
-    this.optionsByLanguage = const {},
-    this.quizExplanationsByLanguage = const {},
-  });
-}
-  const Lesson({required this.title, required this.subtitle, required this.english, required this.persian, required this.options, required this.answer, required this.explanation});
-}
-
 const lessons = <Lesson>[
   Lesson(
-    title: 'Introduction to OSHA', subtitle: 'مقدمه‌ای بر OSHA',
-    english: 'OSHA is the Occupational Safety and Health Administration. Its mission is to help assure safe and healthful working conditions by setting and enforcing standards and providing training, outreach, education, and assistance.',
-    persian: 'OSHA سازمان ایمنی و بهداشت شغلی ایالات متحده است. مأموریت آن کمک به ایجاد شرایط کاری ایمن و سالم از طریق تدوین و اجرای استانداردها و ارائه آموزش، اطلاع‌رسانی و راهنمایی است.',
-    options: ['Occupational Safety and Health Administration', 'Office of Safety Hazard Assessment', 'Organization for Site Health Audits', 'Occupational Standards Help Agency'], answer: 0,
-    explanation: 'OSHA stands for Occupational Safety and Health Administration. این نام رسمی سازمان است.'),
+    title: 'Introduction to OSHA',
+    subtitle: 'مقدمه‌ای بر OSHA',
+    english:
+        'OSHA is the Occupational Safety and Health Administration. Its mission is to help assure safe and healthful working conditions by setting and enforcing standards and providing training, outreach, education, and assistance.',
+    persian:
+        'OSHA سازمان ایمنی و بهداشت شغلی ایالات متحده است. مأموریت آن کمک به ایجاد شرایط کاری ایمن و سالم از طریق تدوین و اجرای استانداردها و ارائه آموزش، اطلاع‌رسانی و راهنمایی است.',
+    options: [
+      'Occupational Safety and Health Administration',
+      'Office of Safety Hazard Assessment',
+      'Organization for Site Health Audits',
+      'Occupational Standards Help Agency',
+    ],
+    answer: 0,
+    explanation:
+        'OSHA stands for Occupational Safety and Health Administration. این نام رسمی سازمان است.',
+  ),
   Lesson(
-    title: 'Recognizing Hazards', subtitle: 'شناسایی خطرات',
-    english: 'A hazard is a source or situation with the potential to cause injury, ill health, or damage. Examples include unguarded moving parts, exposed electrical conductors, excessive noise, and slippery floors.',
-    persian: 'خطر منبع یا وضعیتی است که قابلیت ایجاد آسیب، بیماری یا خسارت دارد؛ مانند قطعات متحرک بدون حفاظ، سیم برق برهنه، صدای بیش از حد و کف لغزنده.',
-    options: ['Only an accident that has happened', 'A source or situation with potential for harm', 'A completed inspection form', 'A safety training certificate'], answer: 1,
-    explanation: 'A hazard has the potential to cause harm even if no incident has occurred yet.'),
+    title: 'Recognizing Hazards',
+    subtitle: 'شناسایی خطرات',
+    english:
+        'A hazard is a source or situation with the potential to cause injury, ill health, or damage. Examples include unguarded moving parts, exposed electrical conductors, excessive noise, and slippery floors.',
+    persian:
+        'خطر منبع یا وضعیتی است که قابلیت ایجاد آسیب، بیماری یا خسارت دارد؛ مانند قطعات متحرک بدون حفاظ، سیم برق برهنه، صدای بیش از حد و کف لغزنده.',
+    options: [
+      'Only an accident that has happened',
+      'A source or situation with potential for harm',
+      'A completed inspection form',
+      'A safety training certificate',
+    ],
+    answer: 1,
+    explanation:
+        'A hazard has the potential to cause harm even if no incident has occurred yet.',
+  ),
   Lesson(
-    title: 'Hierarchy of Controls', subtitle: 'سلسله‌مراتب کنترل ریسک',
-    english: 'The hierarchy of controls prioritizes elimination, substitution, engineering controls, administrative controls, and personal protective equipment. Higher-level controls generally reduce reliance on human behavior.',
-    persian: 'سلسله‌مراتب کنترل شامل حذف، جایگزینی، کنترل‌های مهندسی، کنترل‌های اداری و تجهیزات حفاظت فردی است. کنترل‌های بالاتر معمولاً وابستگی به رفتار فردی را کمتر می‌کنند.',
-    options: ['PPE should always be the first choice', 'Administrative controls are always strongest', 'Elimination is generally the most effective level', 'Training removes every hazard'], answer: 2,
-    explanation: 'Elimination removes the hazard, so it is generally the most effective control when feasible.'),
+    title: 'Hierarchy of Controls',
+    subtitle: 'سلسله‌مراتب کنترل ریسک',
+    english:
+        'The hierarchy of controls prioritizes elimination, substitution, engineering controls, administrative controls, and personal protective equipment. Higher-level controls generally reduce reliance on human behavior.',
+    persian:
+        'سلسله‌مراتب کنترل شامل حذف، جایگزینی، کنترل‌های مهندسی، کنترل‌های اداری و تجهیزات حفاظت فردی است. کنترل‌های بالاتر معمولاً وابستگی به رفتار فردی را کمتر می‌کنند.',
+    options: [
+      'PPE should always be the first choice',
+      'Administrative controls are always strongest',
+      'Elimination is generally the most effective level',
+      'Training removes every hazard',
+    ],
+    answer: 2,
+    explanation:
+        'Elimination removes the hazard, so it is generally the most effective control when feasible.',
+  ),
   Lesson(
-    title: 'Lockout / Tagout Basics', subtitle: 'مبانی قفل‌گذاری و برچسب‌گذاری',
-   sourceTitle: 'OSHA - The Control of Hazardous Energy',
-    sourceUrl: 'https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.147',
+    title: 'Lockout / Tagout Basics',
+    subtitle: 'مبانی قفل‌گذاری و برچسب‌گذاری',
+    english:
+        'Lockout/tagout (LOTO) helps prevent unexpected energization, start-up, or release of stored energy during servicing and maintenance. Workers must follow the applicable procedure and verify isolation before work begins.',
+    persian:
+        'قفل‌گذاری و برچسب‌گذاری برای جلوگیری از راه‌اندازی ناخواسته یا آزادشدن انرژی ذخیره‌شده هنگام تعمیرات و سرویس استفاده می‌شود. پیش از شروع کار باید طبق روش اجرایی مربوطه، جداسازی انرژی را تأیید کرد.',
+    sourceTitle: 'OSHA - The Control of Hazardous Energy',
+    sourceUrl:
+        'https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.147',
     standardClause: '29 CFR 1910.147(a)(1)(i)',
     originalStandardText:
-    'This standard covers the servicing and maintenance of machines and equipment in which the unexpected energization or start up of the machines or equipment, or release of stored energy could cause injury to employees.',
-
+        'This standard covers the servicing and maintenance of machines and equipment in which the unexpected energization or start up of the machines or equipment, or release of stored energy could cause injury to employees.',
+    options: [
+      'A substitute for all maintenance procedures',
+      'A method to control hazardous energy',
+      'Only a sign placed on a wall',
+      'A type of personal protective equipment',
+    ],
+    answer: 1,
+    explanation:
+        'LOTO is part of hazardous-energy control. Site-specific procedures and applicable rules must be followed.',
+  ),
   Lesson(
-    title: 'Personal Protective Equipment', subtitle: 'تجهیزات حفاظت فردی',
-    english: 'Personal protective equipment (PPE) can reduce exposure to workplace hazards when selected, fitted, used, and maintained correctly. PPE should be chosen based on the hazards and does not replace feasible higher-level controls.',
-    persian: 'تجهیزات حفاظت فردی در صورت انتخاب، اندازه‌گذاری، استفاده و نگهداری صحیح می‌توانند مواجهه با خطرات را کاهش دهند. انتخاب آن باید بر اساس خطرات باشد و جایگزین کنترل‌های مؤثرتر و امکان‌پذیر نشود.',
-    options: ['PPE eliminates the need for risk assessment', 'Any PPE is suitable for every hazard', 'PPE should match the hazard and task', 'PPE never needs inspection'], answer: 2,
-    explanation: 'PPE must be appropriate for the identified hazard and used according to training and manufacturer instructions.'),
+    title: 'Personal Protective Equipment',
+    subtitle: 'تجهیزات حفاظت فردی',
+    english:
+        'Personal protective equipment (PPE) can reduce exposure to workplace hazards when selected, fitted, used, and maintained correctly. PPE should be chosen based on the hazards and does not replace feasible higher-level controls.',
+    persian:
+        'تجهیزات حفاظت فردی در صورت انتخاب، اندازه‌گذاری، استفاده و نگهداری صحیح می‌توانند مواجهه با خطرات را کاهش دهند. انتخاب آن باید بر اساس خطرات باشد و جایگزین کنترل‌های مؤثرتر و امکان‌پذیر نشود.',
+    options: [
+      'PPE eliminates the need for risk assessment',
+      'Any PPE is suitable for every hazard',
+      'PPE should match the hazard and task',
+      'PPE never needs inspection',
+    ],
+    answer: 2,
+    explanation:
+        'PPE must be appropriate for the identified hazard and used according to training and manufacturer instructions.',
+  ),
   Lesson(
-    title: 'Incident and Near-Miss Reporting', subtitle: 'گزارش حادثه و شبه‌حادثه',
-    english: 'Reporting incidents and near misses helps identify system weaknesses and prevent recurrence. A useful investigation looks beyond immediate actions to underlying and organizational causes.',
-    persian: 'گزارش حوادث و شبه‌حوادث به شناسایی ضعف‌های سیستم و پیشگیری از تکرار کمک می‌کند. بررسی اثربخش فقط به رفتار لحظه‌ای محدود نمی‌شود و علل ریشه‌ای و سازمانی را نیز بررسی می‌کند.',
-    options: ['Near misses should always be ignored', 'Reporting is only for assigning blame', 'Reports help identify causes and prevent recurrence', 'Only serious injuries can be investigated'], answer: 2,
-    explanation: 'Near-miss reporting is a preventive tool. Investigations should focus on learning and effective corrective actions.'),
+    title: 'Incident and Near-Miss Reporting',
+    subtitle: 'گزارش حادثه و شبه‌حادثه',
+    english:
+        'Reporting incidents and near misses helps identify system weaknesses and prevent recurrence. A useful investigation looks beyond immediate actions to underlying and organizational causes.',
+    persian:
+        'گزارش حوادث و شبه‌حوادث به شناسایی ضعف‌های سیستم و پیشگیری از تکرار کمک می‌کند. بررسی اثربخش فقط به رفتار لحظه‌ای محدود نمی‌شود و علل ریشه‌ای و سازمانی را نیز بررسی می‌کند.',
+    options: [
+      'Near misses should always be ignored',
+      'Reporting is only for assigning blame',
+      'Reports help identify causes and prevent recurrence',
+      'Only serious injuries can be investigated',
+    ],
+    answer: 2,
+    explanation:
+        'Near-miss reporting is a preventive tool. Investigations should focus on learning and effective corrective actions.',
+  ),
 ];
 
 class AcademyShell extends StatefulWidget {
