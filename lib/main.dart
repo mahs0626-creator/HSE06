@@ -180,6 +180,7 @@ class AcademyShell extends StatefulWidget {
 
 class _AcademyShellState extends State<AcademyShell> {
   int tab = 0;
+  String selectedLanguage = 'fa';
   Set<int> completed = {};
   Map<int, int> scores = {};
   bool loaded = false;
@@ -193,6 +194,7 @@ class _AcademyShellState extends State<AcademyShell> {
       completed = (p.getStringList('completed') ?? []).map(int.parse).toSet();
       scores = {for (final e in (p.getStringList('scores') ?? [])) int.parse(e.split(':')[0]): int.parse(e.split(':')[1])};
       loaded = true;
+      selectedLanguage = p.getString('selectedLanguage') ?? 'fa';
     });
   }
 
@@ -212,7 +214,18 @@ class _AcademyShellState extends State<AcademyShell> {
     final pages = [
       Dashboard(completed: completed, scores: scores, onOpen: openLesson, onBrowse: () => setState(() => tab = 1)),
       CoursesPage(completed: completed, onOpen: openLesson),
-      ProfilePage(completedCount: completed.length, averageScore: scores.isEmpty ? 0 : scores.values.reduce((a,b) => a+b) ~/ scores.length),
+      ProfilePage(
+  completedCount: completed.length,
+  averageScore: scores.isEmpty
+      ? 0
+      : scores.values.reduce((a, b) => a + b) ~/ scores.length,
+  selectedLanguage: selectedLanguage,
+  onLanguageChanged: (language) async {
+    setState(() => selectedLanguage = language);
+    final p = await SharedPreferences.getInstance();
+    await p.setString('selectedLanguage', language);
+  },
+),
     ];
     return Directionality(textDirection: TextDirection.ltr, child: Scaffold(
       appBar: AppBar(title: const Text('HSE Academy', style: TextStyle(fontWeight: FontWeight.w800, color: navy)), backgroundColor: Colors.white, surfaceTintColor: Colors.transparent, actions: [Padding(padding: const EdgeInsets.only(right: 16), child: CircleAvatar(backgroundColor: const Color(0xFFE1F4F2), child: Icon(Icons.health_and_safety, color: teal))) ]),
@@ -349,4 +362,122 @@ if (l.originalStandardText.isNotEmpty) ...[
 
 class SectionLabel extends StatelessWidget { final IconData icon; final String title; const SectionLabel({super.key, required this.icon, required this.title}); @override Widget build(BuildContext context) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Row(children: [Icon(icon, color: teal, size: 19), const SizedBox(width: 8), Text(title, style: const TextStyle(fontSize: 12, letterSpacing: 1.1, fontWeight: FontWeight.w800, color: teal))])); }
 
-class ProfilePage extends StatelessWidget { final int completedCount; final int averageScore; const ProfilePage({super.key, required this.completedCount, required this.averageScore}); @override Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(18), children: [Container(padding: const EdgeInsets.all(22), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22)), child: const Column(children: [CircleAvatar(radius: 38, backgroundColor: Color(0xFFE1F4F2), child: Icon(Icons.person, size: 42, color: teal)), SizedBox(height: 12), Text('Learner Profile', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: navy)), Text('Local demo profile', style: TextStyle(color: Colors.black54))])), const SizedBox(height: 16), Card(child: ListTile(leading: const Icon(Icons.school, color: teal), title: const Text('Lessons completed'), trailing: Text('$completedCount / ${lessons.length}', style: const TextStyle(fontWeight: FontWeight.bold)))), Card(child: ListTile(leading: const Icon(Icons.assessment, color: teal), title: const Text('Average quiz score'), trailing: Text('$averageScore%', style: const TextStyle(fontWeight: FontWeight.bold)))), const SizedBox(height: 14), const Text('This starter stores learning progress on this device. Secure online accounts, profile editing, and paid subscriptions are planned for later versions.', style: TextStyle(height: 1.5, color: Colors.black54))]); }
+
+class ProfilePage extends StatelessWidget {
+  final int completedCount;
+  final int averageScore;
+  final String selectedLanguage;
+  final ValueChanged<String> onLanguageChanged;
+
+  const ProfilePage({
+    super.key,
+    required this.completedCount,
+    required this.averageScore,
+    required this.selectedLanguage,
+    required this.onLanguageChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(18),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(22),
+          ),
+          child: const Column(
+            children: [
+              CircleAvatar(
+                radius: 38,
+                backgroundColor: Color(0xFFE1F4F2),
+                child: Icon(Icons.person, size: 42, color: teal),
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Learner Profile',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: navy,
+                ),
+              ),
+              Text(
+                'Learning preferences',
+                style: TextStyle(color: Colors.black54),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Explanation language / زبان توضیحات',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: selectedLanguage,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Choose language',
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'fa',
+                      child: Text('فارسی — Persian'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'en',
+                      child: Text('English — انگلیسی'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) {
+                      onLanguageChanged(value);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.school, color: teal),
+            title: const Text('Lessons completed'),
+            trailing: Text(
+              '$completedCount / ${lessons.length}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            leading: const Icon(Icons.assessment, color: teal),
+            title: const Text('Average quiz score'),
+            trailing: Text(
+              '$averageScore%',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        const Text(
+          'Learning progress is stored on this device. '
+          'The language selector is being connected to lesson content.',
+          style: TextStyle(height: 1.5, color: Colors.black54),
+        ),
+      ],
+    );
+  }
+}
+ extends StatelessWidget { final int completedCount; final int averageScore; const ProfilePage({super.key, required this.completedCount, required this.averageScore}); @override Widget build(BuildContext context) => ListView(padding: const EdgeInsets.all(18), children: [Container(padding: const EdgeInsets.all(22), decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(22)), child: const Column(children: [CircleAvatar(radius: 38, backgroundColor: Color(0xFFE1F4F2), child: Icon(Icons.person, size: 42, color: teal)), SizedBox(height: 12), Text('Learner Profile', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: navy)), Text('Local demo profile', style: TextStyle(color: Colors.black54))])), const SizedBox(height: 16), Card(child: ListTile(leading: const Icon(Icons.school, color: teal), title: const Text('Lessons completed'), trailing: Text('$completedCount / ${lessons.length}', style: const TextStyle(fontWeight: FontWeight.bold)))), Card(child: ListTile(leading: const Icon(Icons.assessment, color: teal), title: const Text('Average quiz score'), trailing: Text('$averageScore%', style: const TextStyle(fontWeight: FontWeight.bold)))), const SizedBox(height: 14), const Text('This starter stores learning progress on this device. Secure online accounts, profile editing, and paid subscriptions are planned for later versions.', style: TextStyle(height: 1.5, color: Colors.black54))]); }
