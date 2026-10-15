@@ -305,7 +305,47 @@ class CoursesPage extends StatelessWidget {
 class LessonTile extends StatelessWidget { final int index; final bool completed; final VoidCallback onTap; const LessonTile({super.key, required this.index, required this.completed, required this.onTap}); @override Widget build(BuildContext context) => Card(margin: const EdgeInsets.only(bottom: 10), child: ListTile(onTap: onTap, contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 7), leading: CircleAvatar(backgroundColor: completed ? const Color(0xFFD9F4E8) : const Color(0xFFE5EDF4), child: Icon(completed ? Icons.check : Icons.play_lesson_outlined, color: completed ? Colors.green : navy)), title: Text(lessons[index].title, style: const TextStyle(fontWeight: FontWeight.bold)), subtitle: Text(lessons[index].subtitle, textDirection: TextDirection.rtl, textAlign: TextAlign.left), trailing: const Icon(Icons.chevron_right))); }
 
 class LessonPage extends StatefulWidget { final Lesson lesson; final int index; final bool isCompleted; final int? previousScore; final ValueChanged<int> onComplete; const LessonPage({super.key, required this.lesson, required this.index, required this.isCompleted, required this.previousScore, required this.onComplete}); @override State<LessonPage> createState() => _LessonPageState(); }
-class _LessonPageState extends State<LessonPage> { int? selected; bool submitted = false; @override Widget build(BuildContext context) { final l = widget.lesson; final correct = selected == l.answer; return Scaffold(appBar: AppBar(title: Text('Lesson ${widget.index+1} of ${lessons.length}')), body: ListView(padding: const EdgeInsets.all(18), children: [Text(l.title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: navy)), const SizedBox(height: 18), const SectionLabel(icon: Icons.translate, title: 'ENGLISH'), Text(l.english, style: const TextStyle(fontSize: 16, height: 1.55)), const SizedBox(height: 18), const SectionLabel(icon: Icons.language, title: 'توضیح فارسی'), Directionality(textDirection: TextDirection.rtl, child: Text(l.persian, style: const TextStyle(fontSize: 16, height: 1.8))), const SizedBox(height: 25), const Divider(), const SizedBox(height: 10), const Text('Knowledge Check', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800)), const Text('Choose the best answer.'), const SizedBox(height: 12), ...List.generate(l.options.length, (i) => Card(child: RadioListTile<int>(value: i, groupValue: selected, onChanged: submitted ? null : (v) => setState(() => selected = v), title: Text(l.options[i]), activeColor: teal))), if (submitted) Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: correct ? const Color(0xFFE0F6EA) : const Color(0xFFFFE8E5), borderRadius: BorderRadius.circular(14)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(correct ? 'Correct answer!' : 'Not quite — review the explanation.', style: TextStyle(fontWeight: FontWeight.bold, color: correct ? Colors.green.shade800 : Colors.red.shade800)), const SizedBox(height: 6), Text(l.explanation), const SizedBox(height: 8), Text('Score: ${correct ? 100 : 0}%') ])), const SizedBox(height: 16), FilledButton(onPressed: selected == null || submitted ? null : () { setState(() => submitted = true); widget.onComplete(correct ? 100 : 0); }, child: Text(submitted ? 'Lesson completed' : 'Check answer & save progress')), if (widget.isCompleted) Padding(padding: const EdgeInsets.only(top: 10), child: Text('Previously completed • saved score: ${widget.previousScore ?? 0}%', textAlign: TextAlign.center, style: const TextStyle(color: teal, fontWeight: FontWeight.bold))) ])); } }
+class _LessonPageState extends State<LessonPage> { int? selected; bool submitted = false; @override Widget build(BuildContext context) { final l = widget.lesson; final correct = selected == l.answer; return Scaffold(appBar: AppBar(title: Text('Lesson ${widget.index+1} of ${lessons.length}')), body: ListView(padding: const EdgeInsets.all(18), children: [Text(l.title, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: navy)), const SizedBox(height: 18), 
+const SectionLabel(icon: Icons.translate, title: 'ENGLISH'),
+Text(
+  l.english,
+  style: const TextStyle(fontSize: 16, height: 1.55),
+),
+
+if (l.originalStandardText.isNotEmpty) ...[
+  const SizedBox(height: 18),
+  const SectionLabel(
+    icon: Icons.menu_book,
+    title: 'ORIGINAL OSHA STANDARD',
+  ),
+  Text(
+    l.standardClause,
+    style: const TextStyle(
+      fontWeight: FontWeight.bold,
+      color: navy,
+    ),
+  ),
+  const SizedBox(height: 8),
+  Text(
+    l.originalStandardText,
+    style: const TextStyle(fontSize: 15, height: 1.6),
+  ),
+  const SizedBox(height: 8),
+  TextButton.icon(
+    onPressed: () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'OSHA source URL: https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.147',
+          ),
+        ),
+      );
+    },
+    icon: const Icon(Icons.link),
+    label: const Text('Official OSHA source'),
+  ),
+],
+ const SizedBox(height: 18), const SectionLabel(icon: Icons.language, title: 'توضیح فارسی'), Directionality(textDirection: TextDirection.rtl, child: Text(l.persian, style: const TextStyle(fontSize: 16, height: 1.8))), const SizedBox(height: 25), const Divider(), const SizedBox(height: 10), const Text('Knowledge Check', style: TextStyle(fontSize: 21, fontWeight: FontWeight.w800)), const Text('Choose the best answer.'), const SizedBox(height: 12), ...List.generate(l.options.length, (i) => Card(child: RadioListTile<int>(value: i, groupValue: selected, onChanged: submitted ? null : (v) => setState(() => selected = v), title: Text(l.options[i]), activeColor: teal))), if (submitted) Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: correct ? const Color(0xFFE0F6EA) : const Color(0xFFFFE8E5), borderRadius: BorderRadius.circular(14)), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(correct ? 'Correct answer!' : 'Not quite — review the explanation.', style: TextStyle(fontWeight: FontWeight.bold, color: correct ? Colors.green.shade800 : Colors.red.shade800)), const SizedBox(height: 6), Text(l.explanation), const SizedBox(height: 8), Text('Score: ${correct ? 100 : 0}%') ])), const SizedBox(height: 16), FilledButton(onPressed: selected == null || submitted ? null : () { setState(() => submitted = true); widget.onComplete(correct ? 100 : 0); }, child: Text(submitted ? 'Lesson completed' : 'Check answer & save progress')), if (widget.isCompleted) Padding(padding: const EdgeInsets.only(top: 10), child: Text('Previously completed • saved score: ${widget.previousScore ?? 0}%', textAlign: TextAlign.center, style: const TextStyle(color: teal, fontWeight: FontWeight.bold))) ])); } }
 
 class SectionLabel extends StatelessWidget { final IconData icon; final String title; const SectionLabel({super.key, required this.icon, required this.title}); @override Widget build(BuildContext context) => Padding(padding: const EdgeInsets.only(bottom: 8), child: Row(children: [Icon(icon, color: teal, size: 19), const SizedBox(width: 8), Text(title, style: const TextStyle(fontSize: 12, letterSpacing: 1.1, fontWeight: FontWeight.w800, color: teal))])); }
 
